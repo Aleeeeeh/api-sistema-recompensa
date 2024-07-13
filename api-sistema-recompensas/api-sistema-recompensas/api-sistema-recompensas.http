@@ -1,0 +1,6 @@
+@api_sistema_recompensas_HostAddress = http://localhost:5222
+
+GET {{api_sistema_recompensas_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
