@@ -13,13 +13,13 @@ public class UserController(UserService userService) : Controller
 
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
-    public async Task<ActionResult<User>> CriarUsuario(User user)
+    public async Task<ActionResult<User>> CreateUser(User user)
     {
         try
         {
             var usuario = await _userService.InsertUser(user);
 
-            return CreatedAtAction(nameof(CriarUsuario), new { id = usuario.Id }, usuario);
+            return CreatedAtAction(nameof(CreateUser), new { id = usuario.Id }, usuario);
         }
         catch (UserException ex)
         {
