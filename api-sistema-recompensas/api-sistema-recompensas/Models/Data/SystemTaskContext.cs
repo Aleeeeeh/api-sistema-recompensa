@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace api_sistema_recompensas.Models.Data;
 
-public class TaskContext : IEntityTypeConfiguration<SystemTask>
+public class SystemTaskContext : IEntityTypeConfiguration<SystemTask>
 {
     public void Configure(EntityTypeBuilder<SystemTask> builder)
     {

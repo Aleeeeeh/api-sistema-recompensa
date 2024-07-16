@@ -9,6 +9,7 @@ public class Request
     [Required(ErrorMessage = "Obrigatório informar a tarefa")]
     public int TaskId { get; set; }
     public SystemTask Task { get; set; } = null!;
+    [Required(ErrorMessage = "Obrigatório informar o status da solicitação")]
     public StatusRequest StatusRequest { get; set; }
     public DateTime CreationDate { get; set; }
     public DateTime ApprovalDate { get; set; }
