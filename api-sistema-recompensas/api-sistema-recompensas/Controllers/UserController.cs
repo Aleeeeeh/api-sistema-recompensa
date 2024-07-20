@@ -23,8 +23,7 @@ public class UserController(UserService userService) : Controller
         }
         catch (UserException ex)
         {
-            Console.WriteLine($"{ex.Message} - {ex.InnerException}");
-            throw;
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
         }
     }
 
@@ -39,8 +38,7 @@ public class UserController(UserService userService) : Controller
         }
         catch (UserException ex)
         {
-            Console.WriteLine($"{ex.Message} - {ex.InnerException}");
-            throw;
+            return StatusCode(StatusCodes.Status404NotFound, ex.Message);
         }
     }
 
@@ -53,8 +51,7 @@ public class UserController(UserService userService) : Controller
         }
         catch (UserException ex)
         {
-            Console.WriteLine($"{ex.Message} - {ex.InnerException}");
-            throw;
+            return StatusCode(StatusCodes.Status404NotFound, ex.Message);
         }
     }
 }

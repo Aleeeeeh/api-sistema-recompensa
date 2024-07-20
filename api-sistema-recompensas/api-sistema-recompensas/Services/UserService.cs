@@ -12,16 +12,16 @@ public class UserService(Context context, IMapper mapper)
     private readonly Context _context = context;
     private readonly IMapper _mapper = mapper;
 
-    public async Task<User> InsertUser(CreateUserDto userDto)
+    public async Task<User> InsertUser(CreateUserDto dto)
     {
         await _context.Database.BeginTransactionAsync();
 
         try
         {
-            User user = _mapper.Map<User>(userDto);
+            User user = _mapper.Map<User>(dto);
             await _context.User.AddAsync(user);
 
-            if (userDto.UserType == UserType.SON)
+            if (dto.UserType == UserType.SON)
             {
                 AccountService accountService = new(_context);
                 await accountService.CreateAccount(user);
@@ -35,21 +35,31 @@ public class UserService(Context context, IMapper mapper)
         catch (DbUpdateException ex)
         {
             await _context.Database.RollbackTransactionAsync();
-            throw new DbUpdateException("Erro ao gerar usuário/conta", ex.InnerException);
+            throw new DbUpdateException($"Erro ao gerar usuário/conta - {ex.Message}");
         }
         catch (UserException ex)
         {
-            throw new UserException("Erro ao cadastrar usuário", ex);
+            throw new UserException($"Erro ao cadastrar usuário - {ex.Message}");
         }
     }
 
-    public async Task UpdateUser(UpdateUserDto userDto, long id)
+    public async Task UpdateUser(UpdateUserDto dto, long id)
     {
-        var user = await GetUserById(id) ?? throw new UserException("Usuário não encontrado");
+        try
+        {
+            var user = await GetUserById(id);
 
-        User createUser = _mapper.Map(userDto, user);
-        _context.User.Update(createUser);
-        await _context.SaveChangesAsync();
+            if (user is null)
+                throw new UserException("Usuário não encontrado");
+
+            User createUser = _mapper.Map(dto, user);
+            _context.User.Update(createUser);
+            await _context.SaveChangesAsync();
+        }
+        catch (UserException ex)
+        {
+            throw new UserException(ex.Message);
+        }
     }
 
     public async Task<User?> GetUserById(long id)
@@ -65,7 +75,7 @@ public class UserService(Context context, IMapper mapper)
         }
         catch (UserException ex)
         {
-            throw new UserException("Erro ao buscar lista de usuários", ex);
+            throw new UserException($"Erro ao buscar lista de usuários - {ex.Message}");
         }
     }
 }
