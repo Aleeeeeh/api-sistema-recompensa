@@ -13,7 +13,7 @@ public class UserController(UserService userService) : Controller
 
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
-    public async Task<IActionResult> CreateUser(UserPostDto userDto)
+    public async Task<IActionResult> CreateUser(CreateUserDto userDto)
     {
         try
         {
@@ -29,13 +29,27 @@ public class UserController(UserService userService) : Controller
     }
 
     [HttpPut]
-    public async Task<IActionResult> UpdateUser([FromQuery] long id, UserUpdateDto userDto)
+    public async Task<IActionResult> UpdateUser([FromQuery] long id, UpdateUserDto userDto)
     {
         try
         {
             await _userService.UpdateUser(userDto, id);
 
             return NoContent();
+        }
+        catch (UserException ex)
+        {
+            Console.WriteLine($"{ex.Message} - {ex.InnerException}");
+            throw;
+        }
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetUsers()
+    {
+        try
+        {
+            return Ok(await _userService.GetUsers());
         }
         catch (UserException ex)
         {

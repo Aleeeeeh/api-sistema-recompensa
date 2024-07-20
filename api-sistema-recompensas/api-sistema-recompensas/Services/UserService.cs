@@ -11,7 +11,7 @@ public class UserService(Context context, IMapper mapper)
     private readonly Context _context = context;
     private readonly IMapper _mapper = mapper;
 
-    public async Task<User> InsertUser(UserPostDto userDto)
+    public async Task<User> InsertUser(CreateUserDto userDto)
     {
         try
         {
@@ -27,7 +27,7 @@ public class UserService(Context context, IMapper mapper)
         }
     }
 
-    public async Task UpdateUser(UserUpdateDto userDto, long id)
+    public async Task UpdateUser(UpdateUserDto userDto, long id)
     {
         var user = await GetUserById(id) ?? throw new UserException("Usuário não encontrado.");
 
@@ -39,5 +39,17 @@ public class UserService(Context context, IMapper mapper)
     public async Task<User?> GetUserById(long id)
     {
         return await _context.User.Where(u => u.Id == id).FirstOrDefaultAsync();
+    }
+
+    public async Task<IEnumerable<User>?> GetUsers()
+    {
+        try
+        {
+            return await _context.User.ToListAsync();
+        }
+        catch (UserException ex)
+        {
+            throw new UserException("Erro ao buscar lista de usuários", ex);
+        }
     }
 }

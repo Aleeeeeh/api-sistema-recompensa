@@ -2,7 +2,7 @@
 
 namespace api_sistema_recompensas.Models.Dtos;
 
-public class UserUpdateDto
+public class UpdateUserDto
 {
     [Required(ErrorMessage = "Obrigatório informar o nome do usuário")]
     public string Name { get; set; } = null!;

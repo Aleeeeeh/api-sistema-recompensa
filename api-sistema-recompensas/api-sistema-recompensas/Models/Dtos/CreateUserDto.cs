@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace api_sistema_recompensas.Models.Dtos;
 
-public class UserPostDto
+public class CreateUserDto
 {
     [Required(ErrorMessage = "Obrigatório informar o nome do usuário")]
     public string Name { get; set; } = null!;
