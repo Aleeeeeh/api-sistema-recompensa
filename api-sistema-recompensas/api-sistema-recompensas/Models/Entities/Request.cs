@@ -7,15 +7,15 @@ public class Request
 {
     public long Id { get; set; }
     [Required(ErrorMessage = "Obrigatório informar a tarefa")]
-    public int TaskId { get; set; }
+    public long TaskId { get; set; }
     public SystemTask Task { get; set; } = null!;
     [Required(ErrorMessage = "Obrigatório informar o status da solicitação")]
     public StatusRequest StatusRequest { get; set; }
     public DateTime CreationDate { get; set; }
     public DateTime ApprovalDate { get; set; }
-    public int UserIdRequester { get; set; }
+    public long UserIdRequester { get; set; }
     public User UserRequester { get; set; } = null!;
-    public int UserIdApprover { get; set; }
+    public long UserIdApprover { get; set; }
     public User UserApprover { get; set; } = null!;
     public int Bonus { get; set; }
 }

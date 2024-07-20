@@ -18,6 +18,7 @@ public class UserContext : IEntityTypeConfiguration<User>
             .IsRequired();
 
         builder.Property(x => x.UserType)
+            .HasConversion<string>()
             .IsRequired();
 
         builder.Property(x => x.Email)

@@ -9,6 +9,7 @@ public class User
     [Required(ErrorMessage = "Obrigatório informar o nome do usuário")]
     public string Name { get; set; } = null!;
     public DateTime DateRegister { get; set; }
+    public DateTime UpdateDate { get; set; } = DateTime.UtcNow.ToLocalTime();
     [Required(ErrorMessage = "Obrigatório informar o tipo de usuário")]
     public UserType UserType { get; set; }
     public string? Email { get; set; }

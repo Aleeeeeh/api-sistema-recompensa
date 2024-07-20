@@ -21,6 +21,7 @@ public class AccountContext : IEntityTypeConfiguration<Account>
 
         builder.HasOne(x => x.User)
             .WithOne()
-            .HasForeignKey<Account>(x => x.UserId);
+            .HasForeignKey<Account>(x => x.UserId)
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }

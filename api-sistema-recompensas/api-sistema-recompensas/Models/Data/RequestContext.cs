@@ -12,7 +12,8 @@ public class RequestContext : IEntityTypeConfiguration<Request>
 
         builder.HasOne(x => x.Task)
             .WithOne()
-            .HasForeignKey<Request>(x => x.TaskId);
+            .HasForeignKey<Request>(x => x.TaskId)
+            .OnDelete(DeleteBehavior.Restrict);
 
         builder.Property(x => x.StatusRequest)
             .IsRequired();
@@ -25,11 +26,13 @@ public class RequestContext : IEntityTypeConfiguration<Request>
 
         builder.HasOne(x => x.UserApprover)
             .WithOne()
-            .HasForeignKey<Request>(x => x.UserIdApprover);
+            .HasForeignKey<Request>(x => x.UserIdApprover)
+            .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasOne(x => x.UserRequester)
             .WithOne()
-            .HasForeignKey<Request>(x => x.UserIdRequester);
+            .HasForeignKey<Request>(x => x.UserIdRequester)
+            .OnDelete(DeleteBehavior.Restrict);
 
         builder.Property(x => x.Bonus)
             .IsRequired();
