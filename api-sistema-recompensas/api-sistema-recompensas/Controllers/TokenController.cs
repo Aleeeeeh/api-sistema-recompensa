@@ -41,4 +41,15 @@ public class TokenController(TokenService service) : Controller
             return StatusCode(StatusCodes.Status404NotFound, ex.Message);
         }
     }
+
+    [HttpGet]
+    public async Task<IActionResult> GetToken()
+    {
+        var token = await _service.GetToken();
+
+        if (token is null)
+            return NoContent();
+
+        return Ok(token);
+    }
 }

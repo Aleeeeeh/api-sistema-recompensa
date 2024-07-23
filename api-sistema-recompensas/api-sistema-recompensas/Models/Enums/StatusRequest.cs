@@ -2,7 +2,7 @@
 
 public enum StatusRequest
 {
-    PENDING = 1,
-    APPROVED = 2,
-    REJECTED = 3
+    PENDENTE = 1,
+    APROVADO = 2,
+    REJEITADO = 3
 }

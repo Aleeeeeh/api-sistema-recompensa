@@ -19,5 +19,9 @@ public class SystemTaskContext : IEntityTypeConfiguration<SystemTask>
 
         builder.Property(x => x.QuantityToken)
             .IsRequired();
+
+        builder.Property(x => x.Situation)
+            .HasConversion<string>()
+            .IsRequired();
     }
 }

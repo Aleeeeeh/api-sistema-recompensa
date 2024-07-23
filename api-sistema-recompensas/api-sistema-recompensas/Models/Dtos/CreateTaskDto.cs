@@ -1,12 +1,10 @@
 ﻿using api_sistema_recompensas.Models.Enums;
 using System.ComponentModel.DataAnnotations;
 
-namespace api_sistema_recompensas.Models.Entities;
+namespace api_sistema_recompensas.Models.Dtos;
 
-public class SystemTask
+public class CreateTaskDto
 {
-    public long Id { get; set; }
-    [Required(ErrorMessage = "Obrigatório informar o nome da tarefa")]
     public string Name { get; set; } = null!;
     [Required(ErrorMessage = "Obrigatório informar a descrição da tarefa")]
     public string Description { get; set; } = null!;

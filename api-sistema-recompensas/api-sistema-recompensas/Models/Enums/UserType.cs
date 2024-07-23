@@ -2,6 +2,6 @@
 
 public enum UserType
 {
-    RESPONSIBLE = 1,
-    SON = 2
+    RESPONSAVEL = 1,
+    FILHO = 2
 }

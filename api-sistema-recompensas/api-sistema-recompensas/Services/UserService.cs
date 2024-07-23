@@ -21,7 +21,7 @@ public class UserService(Context context, IMapper mapper)
             User user = _mapper.Map<User>(dto);
             await _context.User.AddAsync(user);
 
-            if (dto.UserType == UserType.SON)
+            if (dto.UserType == UserType.FILHO)
             {
                 AccountService accountService = new(_context);
                 await accountService.CreateAccount(user);
@@ -52,8 +52,8 @@ public class UserService(Context context, IMapper mapper)
             if (user is null)
                 throw new UserException("Usuário não encontrado");
 
-            User createUser = _mapper.Map(dto, user);
-            _context.User.Update(createUser);
+            User updateUser = _mapper.Map(dto, user);
+            _context.User.Update(updateUser);
             await _context.SaveChangesAsync();
         }
         catch (UserException ex)
