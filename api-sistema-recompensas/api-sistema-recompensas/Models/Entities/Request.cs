@@ -12,10 +12,10 @@ public class Request
     [Required(ErrorMessage = "Obrigatório informar o status da solicitação")]
     public StatusRequest StatusRequest { get; set; }
     public DateTime CreationDate { get; set; }
-    public DateTime ApprovalDate { get; set; }
-    public long UserIdRequester { get; set; }
+    public DateTime UpdateDate { get; set; }
+    public long? UserIdRequester { get; set; }
     public User UserRequester { get; set; } = null!;
-    public long UserIdApprover { get; set; }
+    public long? UserIdApprover { get; set; }
     public User UserApprover { get; set; } = null!;
     public int Bonus { get; set; }
 }

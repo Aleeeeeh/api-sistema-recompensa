@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using api_sistema_recompensas.Models.Entities;
 
@@ -11,9 +12,11 @@ using api_sistema_recompensas.Models.Entities;
 namespace api_sistema_recompensas.Migrations
 {
     [DbContext(typeof(Context))]
-    partial class ContextModelSnapshot : ModelSnapshot
+    [Migration("20240727185416_ajusteUmParaMuitosTaskComRequest")]
+    partial class ajusteUmParaMuitosTaskComRequest
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -61,9 +64,8 @@ namespace api_sistema_recompensas.Migrations
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("StatusRequest")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("StatusRequest")
+                        .HasColumnType("int");
 
                     b.Property<long>("TaskId")
                         .HasColumnType("bigint");
@@ -81,9 +83,13 @@ namespace api_sistema_recompensas.Migrations
 
                     b.HasIndex("TaskId");
 
-                    b.HasIndex("UserIdApprover");
+                    b.HasIndex("UserIdApprover")
+                        .IsUnique()
+                        .HasFilter("[UserIdApprover] IS NOT NULL");
 
-                    b.HasIndex("UserIdRequester");
+                    b.HasIndex("UserIdRequester")
+                        .IsUnique()
+                        .HasFilter("[UserIdRequester] IS NOT NULL");
 
                     b.ToTable("Request");
                 });
@@ -218,13 +224,13 @@ namespace api_sistema_recompensas.Migrations
                         .IsRequired();
 
                     b.HasOne("api_sistema_recompensas.Models.Entities.User", "UserApprover")
-                        .WithMany("RequestsAsApprover")
-                        .HasForeignKey("UserIdApprover")
+                        .WithOne()
+                        .HasForeignKey("api_sistema_recompensas.Models.Entities.Request", "UserIdApprover")
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("api_sistema_recompensas.Models.Entities.User", "UserRequester")
-                        .WithMany("RequestsAsRequester")
-                        .HasForeignKey("UserIdRequester")
+                        .WithOne()
+                        .HasForeignKey("api_sistema_recompensas.Models.Entities.Request", "UserIdRequester")
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Task");
@@ -237,13 +243,6 @@ namespace api_sistema_recompensas.Migrations
             modelBuilder.Entity("api_sistema_recompensas.Models.Entities.SystemTask", b =>
                 {
                     b.Navigation("Requests");
-                });
-
-            modelBuilder.Entity("api_sistema_recompensas.Models.Entities.User", b =>
-                {
-                    b.Navigation("RequestsAsApprover");
-
-                    b.Navigation("RequestsAsRequester");
                 });
 #pragma warning restore 612, 618
         }

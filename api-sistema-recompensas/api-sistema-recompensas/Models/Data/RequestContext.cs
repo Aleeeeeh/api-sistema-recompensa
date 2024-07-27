@@ -11,30 +11,29 @@ public class RequestContext : IEntityTypeConfiguration<Request>
         builder.HasKey(x => x.Id);
 
         builder.HasOne(x => x.Task)
-            .WithOne()
-            .HasForeignKey<Request>(x => x.TaskId)
+            .WithMany(t => t.Requests)
+            .HasForeignKey(x => x.TaskId)
             .OnDelete(DeleteBehavior.Restrict);
 
         builder.Property(x => x.StatusRequest)
+            .HasConversion<string>()
             .IsRequired();
 
         builder.Property(x => x.CreationDate)
             .IsRequired();
 
-        builder.Property(x => x.ApprovalDate)
-            .IsRequired();
+        builder.Property(x => x.UpdateDate);
 
         builder.HasOne(x => x.UserApprover)
-            .WithOne()
-            .HasForeignKey<Request>(x => x.UserIdApprover)
+            .WithMany(t => t.RequestsAsApprover)
+            .HasForeignKey(x => x.UserIdApprover)
             .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasOne(x => x.UserRequester)
-            .WithOne()
-            .HasForeignKey<Request>(x => x.UserIdRequester)
+            .WithMany(t => t.RequestsAsRequester)
+            .HasForeignKey(x => x.UserIdRequester)
             .OnDelete(DeleteBehavior.Restrict);
 
-        builder.Property(x => x.Bonus)
-            .IsRequired();
+        builder.Property(x => x.Bonus);
     }
 }

@@ -9,6 +9,7 @@ public static class DependencyInjectionConfig
         serviceCollection.AddScoped<UserService>();
         serviceCollection.AddScoped<TokenService>();
         serviceCollection.AddScoped<TaskService>();
+        serviceCollection.AddScoped<RequestService>();
         serviceCollection.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
         serviceCollection.AddControllers();

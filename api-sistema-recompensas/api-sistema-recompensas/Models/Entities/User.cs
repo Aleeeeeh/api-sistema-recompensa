@@ -16,4 +16,6 @@ public class User
     public string? CellPhone { get; set; }
     [Required(ErrorMessage = "Obrigatório informar a senha")]
     public string Password { get; set; } = null!;
+    public ICollection<Request> RequestsAsRequester { get; set; } = new List<Request>();
+    public ICollection<Request> RequestsAsApprover { get; set; } = new List<Request>();
 }

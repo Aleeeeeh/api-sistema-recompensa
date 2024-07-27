@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using api_sistema_recompensas.Models.Entities;
 
@@ -11,9 +12,11 @@ using api_sistema_recompensas.Models.Entities;
 namespace api_sistema_recompensas.Migrations
 {
     [DbContext(typeof(Context))]
-    partial class ContextModelSnapshot : ModelSnapshot
+    [Migration("20240727182354_AlterandoNomeColunaDataAlteracaoRequest")]
+    partial class AlterandoNomeColunaDataAlteracaoRequest
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -61,9 +64,8 @@ namespace api_sistema_recompensas.Migrations
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("StatusRequest")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("StatusRequest")
+                        .HasColumnType("int");
 
                     b.Property<long>("TaskId")
                         .HasColumnType("bigint");
@@ -71,19 +73,22 @@ namespace api_sistema_recompensas.Migrations
                     b.Property<DateTime>("UpdateDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<long?>("UserIdApprover")
+                    b.Property<long>("UserIdApprover")
                         .HasColumnType("bigint");
 
-                    b.Property<long?>("UserIdRequester")
+                    b.Property<long>("UserIdRequester")
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("TaskId");
+                    b.HasIndex("TaskId")
+                        .IsUnique();
 
-                    b.HasIndex("UserIdApprover");
+                    b.HasIndex("UserIdApprover")
+                        .IsUnique();
 
-                    b.HasIndex("UserIdRequester");
+                    b.HasIndex("UserIdRequester")
+                        .IsUnique();
 
                     b.ToTable("Request");
                 });
@@ -212,38 +217,28 @@ namespace api_sistema_recompensas.Migrations
             modelBuilder.Entity("api_sistema_recompensas.Models.Entities.Request", b =>
                 {
                     b.HasOne("api_sistema_recompensas.Models.Entities.SystemTask", "Task")
-                        .WithMany("Requests")
-                        .HasForeignKey("TaskId")
+                        .WithOne()
+                        .HasForeignKey("api_sistema_recompensas.Models.Entities.Request", "TaskId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("api_sistema_recompensas.Models.Entities.User", "UserApprover")
-                        .WithMany("RequestsAsApprover")
-                        .HasForeignKey("UserIdApprover")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .WithOne()
+                        .HasForeignKey("api_sistema_recompensas.Models.Entities.Request", "UserIdApprover")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("api_sistema_recompensas.Models.Entities.User", "UserRequester")
-                        .WithMany("RequestsAsRequester")
-                        .HasForeignKey("UserIdRequester")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .WithOne()
+                        .HasForeignKey("api_sistema_recompensas.Models.Entities.Request", "UserIdRequester")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("Task");
 
                     b.Navigation("UserApprover");
 
                     b.Navigation("UserRequester");
-                });
-
-            modelBuilder.Entity("api_sistema_recompensas.Models.Entities.SystemTask", b =>
-                {
-                    b.Navigation("Requests");
-                });
-
-            modelBuilder.Entity("api_sistema_recompensas.Models.Entities.User", b =>
-                {
-                    b.Navigation("RequestsAsApprover");
-
-                    b.Navigation("RequestsAsRequester");
                 });
 #pragma warning restore 612, 618
         }

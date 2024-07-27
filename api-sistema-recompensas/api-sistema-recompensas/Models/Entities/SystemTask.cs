@@ -13,4 +13,5 @@ public class SystemTask
     [Required(ErrorMessage = "Obrigatório informar a quantidade em tokens")]
     public int QuantityToken { get; set; }
     public TaskSituation Situation { get; set; } = (TaskSituation)1;
+    public ICollection<Request>? Requests { get; set; }
 }
