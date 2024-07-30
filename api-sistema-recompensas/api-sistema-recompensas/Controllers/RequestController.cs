@@ -28,7 +28,7 @@ public class RequestController(RequestService service) : Controller
         }
     }
 
-    [HttpPut]
+    [HttpPut("resposta-solicitacao")]
     public async Task<IActionResult> RespondToRequest(RequestAnalysisDto dto)
     {
         try
@@ -43,12 +43,12 @@ public class RequestController(RequestService service) : Controller
         }
     }
 
-    [HttpGet("por-situacao")]
-    public async Task<IActionResult> GetRequestsBySituation([FromQuery] int situacao)
+    [HttpGet("por-situacao-e-data")]
+    public async Task<IActionResult> GetRequestsBySituationAndDate([FromQuery] int situacao, DateTime data, int pagina, int tamanhoPagina)
     {
         try
         {
-            IEnumerable<Request> requests = await _service.GetRequestsBySituation(situacao);
+            PaginacaoDto<Request> requests = await _service.GetRequestsBySituationAndDate(situacao, data, pagina, tamanhoPagina);
 
             return Ok(requests);
         }

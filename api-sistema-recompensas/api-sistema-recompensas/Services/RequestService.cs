@@ -2,6 +2,8 @@
 using api_sistema_recompensas.Models.Dtos;
 using api_sistema_recompensas.Models.Entities;
 using api_sistema_recompensas.Models.Enums;
+using api_sistema_recompensas.Strategy.Contracts;
+using api_sistema_recompensas.Strategy.RequestsStrategy;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 
@@ -57,8 +59,22 @@ public class RequestService(Context context, IMapper mapper)
         return await _context.Request.Where(x => x.Id == id).FirstOrDefaultAsync();
     }
 
-    public async Task<IEnumerable<Request>> GetRequestsBySituation(int situacao)
+    private Dictionary<int, IRequestQueryStrategy<Request>> _strategies = new()
     {
-        return await _context.Request.Where(x => (int)x.StatusRequest == situacao).ToListAsync();
+        { (int)StatusRequest.PENDENTE, new PendingRequestQueryStrategy(context) },
+        { (int)StatusRequest.APROVADO, new ApprovedRequestQueryStrategy(context) },
+        { (int)StatusRequest.REJEITADO, new DisapprovedRequestQueryStrategy(context) }
+    };
+
+    public async Task<PaginacaoDto<Request>> GetRequestsBySituationAndDate(int situacao, DateTime data, int pagina, int tamanhoPagina)
+    {
+        if (_strategies.TryGetValue(situacao, out var strategy))
+        {
+            return await strategy.ExecuteQuery(data, pagina, tamanhoPagina);
+        }
+        else
+        {
+            throw new ArgumentException("Situação não reconhecida.", nameof(situacao));
+        }
     }
 }
