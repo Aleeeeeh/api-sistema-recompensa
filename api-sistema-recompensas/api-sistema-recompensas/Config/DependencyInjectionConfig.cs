@@ -1,4 +1,5 @@
 ﻿using api_sistema_recompensas.Services;
+using System.Text.Json.Serialization;
 
 namespace api_sistema_recompensas.Config;
 
@@ -12,7 +13,14 @@ public static class DependencyInjectionConfig
         serviceCollection.AddScoped<RequestService>();
         serviceCollection.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-        serviceCollection.AddControllers();
+        serviceCollection.AddControllers()
+            .AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+                options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+                options.JsonSerializerOptions.WriteIndented = true;
+            });
+
         serviceCollection.AddEndpointsApiExplorer();
         serviceCollection.AddSwaggerGen();
     }

@@ -9,24 +9,25 @@ namespace api_sistema_recompensas.Strategy.RequestsStrategy;
 public class DisapprovedRequestQueryStrategy(Context context) : IRequestQueryStrategy<Request>
 {
     private readonly Context _context = context;
-    public async Task<PaginacaoDto<Request>> ExecuteQuery(DateTime data, int pagina, int tamanhoPagina)
+    public async Task<PaginacaoDto<Request>> ExecuteQuery(DateTime initialDate, DateTime finalDate, int page, int pageSize)
     {
         List<Request> requests = await _context.Request
-            .Where(x => x.CreationDate.Date == data.Date && x.StatusRequest == StatusRequest.REJEITADO)
-            .Skip((pagina - 1) * tamanhoPagina)
-            .Take(tamanhoPagina)
+            .Where(x => x.UpdateDate.Date >= initialDate.Date && x.UpdateDate.Date <= finalDate.Date
+                && x.StatusRequest == StatusRequest.REJEITADO)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
             .ToListAsync();
 
         int totalRegistros = requests.Count;
-        int totalPaginas = (int)Math.Ceiling(totalRegistros / (double)tamanhoPagina);
+        int totalPaginas = (int)Math.Ceiling(totalRegistros / (double)pageSize);
 
         return new PaginacaoDto<Request>
         {
-            TotalRegistros = totalRegistros,
-            TotalPaginas = totalPaginas,
-            PaginaAtual = pagina,
-            TamanhoPagina = tamanhoPagina,
-            Resultados = requests
+            TotalPages = totalRegistros,
+            TotalRecords = totalPaginas,
+            CurrentPage = page,
+            PageSize = pageSize,
+            Results = requests
         };
     }
 }

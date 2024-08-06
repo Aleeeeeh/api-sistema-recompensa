@@ -4,5 +4,5 @@ namespace api_sistema_recompensas.Strategy.Contracts;
 
 public interface IRequestQueryStrategy<T>
 {
-    Task<PaginacaoDto<T>> ExecuteQuery(DateTime data, int pagina, int tamanhoPagina);
+    Task<PaginacaoDto<T>> ExecuteQuery(DateTime initialDate, DateTime finalDate, int page, int pageSize);
 }

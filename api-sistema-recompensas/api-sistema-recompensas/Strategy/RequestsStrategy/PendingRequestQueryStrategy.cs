@@ -10,24 +10,27 @@ public class PendingRequestQueryStrategy(Context context) : IRequestQueryStrateg
 {
     private readonly Context _context = context;
 
-    public async Task<PaginacaoDto<Request>> ExecuteQuery(DateTime data, int pagina, int tamanhoPagina)
+    public async Task<PaginacaoDto<Request>> ExecuteQuery(DateTime initialDate, DateTime finalDate, int page, int pageSize)
     {
         List<Request> requests = await _context.Request
-            .Where(x => x.CreationDate.Date == data.Date && x.StatusRequest == StatusRequest.PENDENTE)
-            .Skip((pagina - 1) * tamanhoPagina)
-            .Take(tamanhoPagina)
+            .Include(x => x.Task)
+            .Include(x => x.UserRequester)
+            .Where(x => x.CreationDate.Date >= initialDate.Date && x.CreationDate.Date <= finalDate.Date &&
+                    x.StatusRequest == StatusRequest.PENDENTE)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
             .ToListAsync();
 
         int totalRegistros = requests.Count;
-        int totalPaginas = (int)Math.Ceiling(totalRegistros / (double)tamanhoPagina);
+        int totalPaginas = (int)Math.Ceiling(totalRegistros / (double)pageSize);
 
         return new PaginacaoDto<Request>
         {
-            TotalRegistros = totalRegistros,
-            TotalPaginas = totalPaginas,
-            PaginaAtual = pagina,
-            TamanhoPagina = tamanhoPagina,
-            Resultados = requests
+            TotalPages = totalRegistros,
+            TotalRecords = totalPaginas,
+            CurrentPage = page,
+            PageSize = pageSize,
+            Results = requests
         };
     }
 }

@@ -66,15 +66,15 @@ public class RequestService(Context context, IMapper mapper)
         { (int)StatusRequest.REJEITADO, new DisapprovedRequestQueryStrategy(context) }
     };
 
-    public async Task<PaginacaoDto<Request>> GetRequestsBySituationAndDate(int situacao, DateTime data, int pagina, int tamanhoPagina)
+    public async Task<PaginacaoDto<Request>> GetRequestsBySituationAndDate(DateTime initialDate, DateTime finalDate, int situation, int page, int pageSize)
     {
-        if (_strategies.TryGetValue(situacao, out var strategy))
+        if (_strategies.TryGetValue(situation, out var strategy))
         {
-            return await strategy.ExecuteQuery(data, pagina, tamanhoPagina);
+            return await strategy.ExecuteQuery(initialDate, finalDate, page, pageSize);
         }
         else
         {
-            throw new ArgumentException("Situação não reconhecida.", nameof(situacao));
+            throw new ArgumentException("Situação não reconhecida.", nameof(situation));
         }
     }
 }

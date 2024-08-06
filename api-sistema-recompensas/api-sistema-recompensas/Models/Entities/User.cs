@@ -1,5 +1,6 @@
 ﻿using api_sistema_recompensas.Models.Enums;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace api_sistema_recompensas.Models.Entities;
 
@@ -16,6 +17,8 @@ public class User
     public string? CellPhone { get; set; }
     [Required(ErrorMessage = "Obrigatório informar a senha")]
     public string Password { get; set; } = null!;
+    [JsonIgnore]
     public ICollection<Request> RequestsAsRequester { get; set; } = new List<Request>();
+    [JsonIgnore]
     public ICollection<Request> RequestsAsApprover { get; set; } = new List<Request>();
 }

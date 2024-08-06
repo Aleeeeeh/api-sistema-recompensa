@@ -2,9 +2,9 @@
 
 public class PaginacaoDto<T>
 {
-    public int TotalRegistros { get; set; }
-    public int TotalPaginas { get; set; }
-    public int PaginaAtual { get; set; }
-    public int TamanhoPagina { get; set; }
-    public List<T>? Resultados { get; set; }
+    public int TotalRecords { get; set; }
+    public int TotalPages { get; set; }
+    public int CurrentPage { get; set; }
+    public int PageSize { get; set; }
+    public List<T>? Results { get; set; }
 }

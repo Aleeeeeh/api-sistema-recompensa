@@ -1,5 +1,6 @@
 ﻿using api_sistema_recompensas.Models.Enums;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace api_sistema_recompensas.Models.Entities;
 
@@ -13,5 +14,6 @@ public class SystemTask
     [Required(ErrorMessage = "Obrigatório informar a quantidade em tokens")]
     public int QuantityToken { get; set; }
     public TaskSituation Situation { get; set; } = (TaskSituation)1;
+    [JsonIgnore]
     public ICollection<Request>? Requests { get; set; }
 }

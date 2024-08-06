@@ -44,11 +44,11 @@ public class RequestController(RequestService service) : Controller
     }
 
     [HttpGet("por-situacao-e-data")]
-    public async Task<IActionResult> GetRequestsBySituationAndDate([FromQuery] int situacao, DateTime data, int pagina, int tamanhoPagina)
+    public async Task<IActionResult> GetRequestsBySituationAndDate([FromQuery] DateTime initialDate, DateTime finalDate, int situation, int page, int pageSize)
     {
         try
         {
-            PaginacaoDto<Request> requests = await _service.GetRequestsBySituationAndDate(situacao, data, pagina, tamanhoPagina);
+            PaginacaoDto<Request> requests = await _service.GetRequestsBySituationAndDate(initialDate, finalDate, situation, page, pageSize);
 
             return Ok(requests);
         }
