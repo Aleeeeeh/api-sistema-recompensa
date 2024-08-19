@@ -6,7 +6,7 @@ public class Account
 {
     public long Id { get; set; }
     [Required(ErrorMessage = "Obrigatório informar a quantidade em tokens")]
-    public decimal Balance { get; set; }
+    public int Balance { get; set; }
     public DateTime DateLastUpdate { get; set; } = DateTime.UtcNow.ToLocalTime();
     [Required(ErrorMessage = "Obrigatório informar o usuário")]
     public long UserId { get; set; }

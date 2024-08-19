@@ -11,6 +11,8 @@ public static class DependencyInjectionConfig
         serviceCollection.AddScoped<TokenService>();
         serviceCollection.AddScoped<TaskService>();
         serviceCollection.AddScoped<RequestService>();
+        serviceCollection.AddScoped<BalanceService>();
+        serviceCollection.AddScoped<AccountService>();
         serviceCollection.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
         serviceCollection.AddControllers()

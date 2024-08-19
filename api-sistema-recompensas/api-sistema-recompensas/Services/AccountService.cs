@@ -1,5 +1,6 @@
 ﻿using api_sistema_recompensas.Exceptions;
 using api_sistema_recompensas.Models.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace api_sistema_recompensas.Services;
 
@@ -25,5 +26,10 @@ public class AccountService(Context context)
         {
             throw new AccountException("Erro criar conta.", ex);
         }
+    }
+
+    public async Task<Account?> GetAccount(int userId)
+    {
+        return await _context.Account.Where(x => x.User.Id == userId).FirstOrDefaultAsync();
     }
 }

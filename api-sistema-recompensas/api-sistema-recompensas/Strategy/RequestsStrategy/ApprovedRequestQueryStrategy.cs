@@ -12,6 +12,8 @@ public class ApprovedRequestQueryStrategy(Context context) : IRequestQueryStrate
     public async Task<PaginacaoDto<Request>> ExecuteQuery(DateTime initialDate, DateTime finalDate, int page, int pageSize)
     {
         List<Request> requests = await _context.Request
+            .Include(x => x.Task)
+            .Include(x => x.UserRequester)
             .Where(x => x.UpdateDate.Date >= initialDate.Date && x.UpdateDate.Date <= finalDate.Date
                     && x.StatusRequest == StatusRequest.APROVADO)
             .Skip((page - 1) * pageSize)
